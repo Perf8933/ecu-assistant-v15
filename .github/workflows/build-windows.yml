@@ -2,31 +2,29 @@ name: Build EXE
 
 on:
   push:
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-    - name: Install dependencies
-      run: pip install -r requirements.txt
+      - name: Install dependencies
+        run: pip install -r requirements.txt
 
-    - name: Install PyInstaller
-      run: pip install pyinstaller
+      - name: Build EXE
+        run: pyinstaller --onefile --noconsole ecu_assistant_v15_pro.py
 
-    - name: Build EXE
-      run: pyinstaller --onefile --noconsole ecu_assistant_v15_pro.py
-
-    - name: Upload EXE
-      uses: actions/upload-artifact@v3
-      with:
-        name: ECU_V15_EXE
-        path: dist/ecu_assistant_v15_pro.exe
+      - name: Upload EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: ECU_V15_EXE
+          path: dist/ecu_assistant_v15_pro.exe
